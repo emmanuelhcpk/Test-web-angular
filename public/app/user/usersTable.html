@@ -1,0 +1,20 @@
+<table class="table">
+    <caption>Tabla de usuarios registrados</caption>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Rol</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="user in users">
+        <th scope="row">{{$index+1}}</th>
+        <td>{{user.name}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.role}}</td>
+
+    </tr>
+    </tbody>
+</table>

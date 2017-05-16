@@ -1,0 +1,81 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="container" ng-controller="UserCtrl">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Gestión de Usuarios</h1>
+
+            <div>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#newUser">
+                    Agregar Usuario
+                </button>
+
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#add" aria-controls="home" role="tab"
+                                                              data-toggle="tab">Agregar Usuarios</a></li>
+                    <li role="presentation"><a href="#manage" aria-controls="profile" role="tab"
+                                               data-toggle="tab">Gestionar Usuarios</a></li>
+
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="add">
+                        <div ng-include="'app/user/usersTable.html'"></div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="manage"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div><!-- Modal -->
+        <div class="modal fade" id="newUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Crear Usuario</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form" ng-submit="saveUser()">
+                            <div class="form-group">
+                                <label for="name">Nombre</label>
+                                <input type="text" id="name" ng-model="name" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Newemail">Correo</label>
+                                <input type="email" id="Newemail" ng-model="email" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Newpass">Contraseña</label>
+                                <input type="password" id="Newpass" ng-model="password" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Rol</label>
+                                <select name="" ng-model="role" class="form-control" required>Rol
+                                    <option value="admin">Administrador</option>
+                                    <option value="encargado_brigada">Encargado de brigada</option>
+                                    <option value="encargado">Encargado Grupo</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div></div>
+</div>
+
