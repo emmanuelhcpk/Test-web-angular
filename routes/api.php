@@ -16,6 +16,8 @@ Route::group(['prefix' => 'v1'], function () { // versión 1 de la api
 
     Route::post('users/register', 'AuthController@register');
     Route::post('users/login', 'AuthController@login');
+    Route::resource('diccionario','DiccionarioController');
+    Route::resource('validacion','ValidacionController');
     Route::group(['middleware' => 'jwt-auth'], function () {
         Route::get('users/me', 'AuthController@get_user_details');
     });

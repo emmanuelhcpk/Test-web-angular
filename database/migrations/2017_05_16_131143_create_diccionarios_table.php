@@ -15,6 +15,8 @@ class CreateDiccionariosTable extends Migration
     {
         Schema::create('diccionarios', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nombre');
+            $table->string('identificacion');
             $table->timestamps();
         });
     }

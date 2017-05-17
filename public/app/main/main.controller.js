@@ -1,19 +1,27 @@
 'use strict';
 
 angular.module('resourcesApp')
-    .controller('MainCtrl', function ($scope,$state, $http, Auth) {
+    .controller('MainCtrl', function ($scope, $state, $http, Auth, $ajax) {
         $scope.awesomeThings = [];
-        //$scope.getCurrentUser = Auth.getCurrentUser;
-        /*$http.get('/api/users/user').success(function (data) {
-            $scope.user = data.user;
-
-        });
-        $http.get('/api/authenticate').success(function (awesomeThings) {
-            $scope.awesomeThings = awesomeThings;
-        });
-*/
-
+        $scope.guardar = function () {
+            //$ajax.
+        }
         $scope.deleteThing = function (thing) {
             $http.delete('/api/things/' + thing._id);
         };
+        $scope.guardarDiccionario = function () {
+            $ajax.post({
+                url: '/api/v1/diccionario',
+                data: {
+                    archivo: $scope.archivo,
+
+                },
+                request_type: 'file',
+                succes: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+        $scope.hacerValidacion = function () {
+        }
     });

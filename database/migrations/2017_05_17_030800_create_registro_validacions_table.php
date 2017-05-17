@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateArchivosTable extends Migration
+class CreateRegistroValidacionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,8 @@ class CreateArchivosTable extends Migration
      */
     public function up()
     {
-        Schema::create('archivos', function (Blueprint $table) {
+        Schema::create('registro_validacions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('mime');
-            $table->string('filename');
-            $table->string('nombre');
-            $table->enum('tipo', array('diccionario', 'validacion'));
-            //$table->string('hash');
             $table->timestamps();
         });
     }
@@ -31,6 +26,6 @@ class CreateArchivosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('archivos');
+        Schema::dropIfExists('registro_validacions');
     }
 }

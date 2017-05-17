@@ -4,7 +4,7 @@ angular.module('resourcesApp')
   .controller('NavbarCtrl', function ($scope, $location,$state,Auth) {
     $scope.menu = [{
       'title': 'Inicio',
-      'link': '/home'
+      'link': 'home'
     }];
 
     $scope.isCollapsed = true;
@@ -12,7 +12,7 @@ angular.module('resourcesApp')
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
     console.log($scope.isLoggedIn(),$scope.getCurrentUser());
-
+    $scope.go = $state.go
     $scope.logout = function() {
       Auth.logout();
       $state.go('login');
