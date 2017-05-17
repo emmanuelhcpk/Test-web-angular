@@ -8,41 +8,17 @@ angular.module('resourcesApp', [
         'ui.bootstrap',
         'servicios'
     ])
-    .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
-        $urlRouterProvider
-            .otherwise('/login');
-        $stateProvider
-            .state('login', {
-                url: '/login',
-                templateUrl: '/app/account/login/login.html',
-                controller: 'LoginController'
-            })
-            .state('sign', {
-                url: '/sign',
-                templateUrl: '/app/account/signup/signup.html',
-                controller: 'SignUpController'
-            })
-        /*.state('home', {
-         url: '/',
-         templateUrl: '/account/login/login.html',
-         controller: 'InicioController'
-         })*/
-
-        //$locationProvider.html5Mode(true);
-        $httpProvider.interceptors.push('authInterceptor');
-    })
-
     .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
         return {
             // Add authorization token to headers
             request: function (config) {
+                console.log('interceptando');
                 config.headers = config.headers || {};
                 if ($cookieStore.get('token')) {
                     config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
                 }
                 return config;
             },
-
             // Intercept 401s and redirect you to login
             responseError: function (response) {
                 if (response.status === 401) {
@@ -56,6 +32,26 @@ angular.module('resourcesApp', [
                 }
             }
         };
+    }).config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+        $urlRouterProvider
+            .otherwise('/login');
+        $httpProvider.interceptors.push('authInterceptor');
+        $stateProvider
+            .state('login', {
+                url: '/login',
+                templateUrl: '/app/account/login/login.html',
+                controller: 'LoginController'
+            })
+            .state('sign', {
+                url: '/sign',
+                templateUrl: '/app/account/signup/signup.html',
+                controller: 'SignUpController'
+            }).state('settings', {
+            url: '/settings',
+            templateUrl: '/app/account/settings/settings.html',
+            controller: 'SettingsCtrl',
+            authenticate: true
+        });
     })
 
     .run(function ($rootScope, $location, $state, Auth) {

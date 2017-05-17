@@ -1,0 +1,27 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-7 col-sm-offset-3">
+            <br>
+            <div class="well">
+                <form ng-submit="guardarDiccionario()" class="form well">
+                    <h3>Cargar diccionario</h3>
+                    <div class="form-group">
+                        <label for="">Archivo de diccionario</label>
+                        <input type="file" class="form-control" file-model="archivo" required>
+
+                    </div>
+                    <button class="btn-success">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>Desarrollado Por Emmanuel Velez
+            <a href="https://github.com/emmanuelhcpk">Emmanuelhcpk</a>
+    </div>
+</footer>

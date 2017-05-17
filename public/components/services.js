@@ -250,11 +250,9 @@ angular.module('servicios', [])
             components.params = $params;
             components.setLoading();
             var $request = components.setRequestType();
-            $request.success(function ($data) {
+            $request.then(function ($data) {
                 components.succes($data);
                 $params.succes($data);
-            }).error(function ($data) {
-                components.error($data);
             });
         };
         this.save = function ($params) {

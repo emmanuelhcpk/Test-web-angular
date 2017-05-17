@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Diccionario;
 use App\Validacion;
 use Illuminate\Http\Request;
 use App\Util;
@@ -11,6 +12,9 @@ class ValidacionController extends Controller
 {
     public function store(Request $request)
     {   // logica de guardar diccionario y archivo
+
+        $umbral = $request->input('porcentaje')/100;
+        $atributo = $request->input('atributo');
         $file = $request->file('archivo');
         $extension = $file->getClientOriginalExtension();
         \Storage::disk('local')->put($file->getFilename() . '.' . $extension, \File::get($file));
@@ -22,25 +26,33 @@ class ValidacionController extends Controller
         $archivo->save();
         $array = Archivo::csvToArray(storage_path() . '/app/' . $file->getFilename() . '.' . $extension, ',');
 
-        $posiciones = $array[0];// obtengo las posiciones de nombre y indentificacion
-        for ($i = 0; $i < count($posiciones); $i++) {
-            if ($posiciones[$i] == 'nombre') {
-                $indiceNombre = $i;
-
-            } else if ($posiciones[$i] == 'identificacion') {
-                $indiceId = $i;
-            }
-        }
         // logica de creación de archivos
-        if (isset($indiceId) && isset($indiceNombre)) {
-            for ($i = 1; $i < count($posiciones); $i++) {
-                $palabra = new Validacion();
-                $palabra->nombre = $array[$i][$indiceNombre];
-                $palabra->indetificacion = $array[$i][$indiceId];
-                $palabra->save();
+        for ($i = 1; $i < count($array); $i++) {
+            $palabra = new Validacion();
+            $palabra->nombre = $array[$i]['nombre'];
+            $palabra->identificacion = $array[$i]['identificacion'];
+            $palabra->save();
+        }
+
+        //comparacion por nombre o por indetificacion
+        $diccionario = Diccionario::all();
+        //$validacion = Validacion::all();
+        $seleccionadas = [];
+        foreach ($array as $wordVal) {
+
+            foreach ($diccionario as $word) {
+                $distancia = Util::levenshtein($word[$atributo], $wordVal[$atributo]);
+                $porcentaje = 1-($distancia / max(strlen($word[$atributo]), strlen($wordVal[$atributo])));
+                if ($porcentaje >= $umbral) {
+                    $aux = [];
+                    $aux['diccionario'] = $word;
+                    $aux['validacion'] = $wordVal;
+                    $aux['porcentaje'] = $porcentaje;
+                    array_push($seleccionadas, $aux);
+                }
             }
         }
 
-
+        return $seleccionadas;
     }
 }

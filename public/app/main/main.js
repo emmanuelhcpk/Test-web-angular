@@ -6,9 +6,14 @@ angular.module('resourcesApp')
       .state('home', {
         url: '/home',
         templateUrl: '/app/main/main.html',
-        controller: 'MainCtrl'/*,
-        onEnter:function($scope,Auth){
-
-        }*/
+        controller: 'MainCtrl'
+      }).state('diccionario', {
+        url: '/diccionario',
+        templateUrl: '/app/main/diccionario.html',
+        controller: 'DiccionarioCtrl'
+      }).state('validacion', {
+        url: '/validacion',
+        templateUrl: '/app/main/validacion.html',
+        controller: 'ValidacionCtrl'
       });
   });

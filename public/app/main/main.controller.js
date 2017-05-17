@@ -23,5 +23,17 @@ angular.module('resourcesApp')
             });
         }
         $scope.hacerValidacion = function () {
+            $ajax.post({
+                url: '/api/v1/validacion',
+                data: {
+                    archivo: $scope.val,
+                    porcentaje: $scope.porcentaje,
+                    atributo:$scope.atributo
+                },
+                request_type: 'file',
+                succes: function (data) {
+                    console.log(data);
+                }
+            });
         }
     });

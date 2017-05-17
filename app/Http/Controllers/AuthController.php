@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+
 
 class AuthController extends Controller
 {
@@ -37,7 +39,10 @@ class AuthController extends Controller
     function getMe(Request $request)
     {
         $input = $request->all();
-        $user = JWTAuth::toUser($input['token']);
-        return response()->json(['result' => $user]);
+
+        $user = JWTAuth::parseToken()->authenticate();
+
+        //$user = JWTAuth::toUser($input['token']);
+        return response()->json($user);
     }
 }

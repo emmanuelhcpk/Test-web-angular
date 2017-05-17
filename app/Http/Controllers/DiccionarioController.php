@@ -23,24 +23,21 @@ class DiccionarioController extends Controller
         $archivo->save();
         $array = Archivo::csvToArray(storage_path() . '/app/' . $file->getFilename() . '.' . $extension, ',');
 
-        $posiciones = $array[0];// obtengo las posiciones de nombre y indentificacion
-        for ($i = 0; $i < count($posiciones); $i++) {
-            if ($posiciones[$i] == 'nombre') {
-                $indiceNombre = $i;
-
-            } else if ($posiciones[$i] == 'identificacion') {
-                $indiceId = $i;
-            }
-        }
         // logica de creación de archivos
-        if (isset($indiceId) && isset($indiceNombre)) {
-            for ($i = 1; $i < count($posiciones); $i++) {
-                $palabra = new Diccionario();
-                $palabra->nombre = $array[$i][$indiceNombre];
-                $palabra->indetificacion = $array[$i][$indiceId];
-                $palabra->save();
+        for ($i = 0; $i < count($array); $i++) {
+            $aux = Diccionario::where('nombre','=',$array[$i]['nombre'])->where('identificacion','=',$array[$i]['identificacion'])->first();
+            if(isset($aux)){
+                $aux->updated_at = date('Y-m-d G:i:s'); // se actualiza la fecha
+                $aux->save();
+            }else{
+            $palabra = new Diccionario();
+            $palabra->nombre = $array[$i]['nombre'];
+            $palabra->identificacion = $array[$i]['identificacion'];
+            $palabra->save();
             }
         }
+
+        dd($array);
 
 
     }

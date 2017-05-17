@@ -4,8 +4,8 @@ angular.module('resourcesApp')
     .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
         var currentUser = {};
         var getUser = function () {
-            $http.get('/api/users/user').success(function (data) {
-                currentUser = data.user;
+            $http.get('/api/v1/users/me').then(function (data) {
+                currentUser = data;
             });
         }
         if ($cookieStore.get('token')) {
@@ -23,25 +23,22 @@ angular.module('resourcesApp')
              * @param  {Function} callback - optional
              * @return {Promise}
              */
-            login: function (user, callback) {
-                var cb = callback || angular.noop;
+            login: function (user) {
                 var deferred = $q.defer();
 
-                $http.post('/api/authenticate', {
+                $http.post('/api/v1/users/login', {
                     email: user.email,
                     password: user.password
-                }).
-                    success(function (data) {
-                        $cookieStore.put('token', data.token);
+                }).then((function (data) {
+                        $cookieStore.put('token', data.data.token);
+                        console.log($cookieStore.get('token'),data)
                         getUser();
                         deferred.resolve(data);
-                        return cb();
-                    }).
-                    error(function (err) {
+                    }),
+                    (function (err) {
                         this.logout();
                         deferred.reject(err);
-                        return cb(err);
-                    }.bind(this));
+                    }))
 
                 return deferred.promise;
             },
@@ -66,12 +63,12 @@ angular.module('resourcesApp')
             createUser: function (user, callback) {
                 var cb = callback || angular.noop;
 
-                return User.save(user,
+                return $http.post('/api/v1/users/login', user).success(
                     function (data) {
                         $cookieStore.put('token', data.token);
                         getUser();
                         return cb(user);
-                    },
+                    }).error(
                     function (err) {
                         this.logout();
                         return cb(err);
@@ -105,6 +102,7 @@ angular.module('resourcesApp')
              * @return {Object} user
              */
             getCurrentUser: function () {
+
                 return currentUser;
 
             },
@@ -116,7 +114,8 @@ angular.module('resourcesApp')
              * @return {Boolean}
              */
             isLoggedIn: function () {
-                return currentUser.hasOwnProperty('role');
+                    return currentUser.hasOwnProperty('name');
+
             },
 
             /**

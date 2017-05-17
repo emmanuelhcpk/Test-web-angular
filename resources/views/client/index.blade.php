@@ -70,6 +70,8 @@
 <script src="app/admin/admin.js"></script>
 
 <script src="app/main/main.controller.js"></script>
+<script src="app/main/diccionario.controller.js"></script>
+<script src="app/main/validacion.controller.js"></script>
 <script src="app/main/main.js"></script>
 
 <script src="components/auth/auth.service.js"></script>
